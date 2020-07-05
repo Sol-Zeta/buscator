@@ -1,0 +1,246 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <link rel="shortcut icon" type="image/png" href="./favicon.ico"/>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>BUSCATOR</title>
+</head>
+
+<body>
+    <div class="header">
+    <div class="title">
+        <!-- <img src="images/plane.png" alt="logo" id="imgTitle"> -->
+        <div id="mainTitle">
+            <h1>BUSCATOR</h1>
+            <p>EL VUELO MÁS BARATO</p>
+        </div>
+    </div>
+</div>
+    <div class="content">
+        <form action="" method="GET" id="searchForm" class="search-form">
+            <div id="formBox">
+                <div class="destiny">
+                    <div class="dark">
+                            <label for="departureAirports" id="departureAirports">Origen  </label>
+                            <!-- <select class="search" name="departureOptions"id="departureOptions"> -->
+                            <input type="text" list="departureAirportList" id="departureAirport" name="departureAirports" class="search1"
+                                placeholder="Ciudad o IATA" autocomplete="off" required>
+                            <div id="departureOptions"></div>
+                        </div>
+                    <div class="light">
+                        <label for="arrivalAirports">Destino  </label>
+                        <input type="text" list="arrivalAirportList" id="arrivalAirport" name="arrivalAirports" class="search2"
+                            placeholder="Ciudad o IATA" autocomplete="off" required>
+                        <div id="arrivalOptions"></div>
+                    </div>
+                </div> 
+                <div class="destiny">
+                    <div class="dark-b">
+                        <div id="date">
+                            <div id="departureDateDiv">
+                            <label for="departureDate" id="departureDateLabel">Fecha de ida</label>
+                            <input type="date" name="departureDate" id="departureDate" class="redondeado" pattern="/^\d{4}([\-/.])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/">
+                            </div>
+
+                            <div id="returnDepartureDateDiv">
+                            <label for="returnDepartureDate" id="returnDepartureDateLabel">Fecha de retorno</label>
+                            <input type="date" name="returnDepartureDate" id="returnDepartureDate" class="redondeado">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="passengersAndDirection">
+                    <button id="btn-modal" class="btn-modal" onclick="setPassengers()"> Pasajeros </button> 
+                    <div id="passengersPreview">
+                    <div id="selectedPassengers"> </div>              
+                    </div>
+                    <div class="select-direction">
+                        <select name="select-direction" id="selectDir" onchange="functDir()">
+                            <option value="departure">Sólo ida</option> 
+                            <option value="departureReturn" selected>Ida y vuelta</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="submitDiv">
+                    <input type="submit" id="btn-search" value="Buscar" class="btn-search"> <!--modificado-->
+                    <p id="mensajeValidar"></p>
+                </div>
+            </div>
+        </form>        
+    </div>
+    
+    <div>
+    <div class="response" id="response">
+            <div id="flightInfo">
+                <div class="darkFlight">
+                    <div class="simple">
+                        <div class="flightInfoBoxes"> 
+                            <label for="flihtInfoTitle" class="subtitle">IDA <br></label><!--modificado-->
+                            <img src="./images/plane.png" alt="plane" class="thumbnail"> <!--modificado-->      
+                        </div>
+                        <div class="flightInfoBoxes">
+                            <label for="airline"></label>
+                            <div class="goTo"> <!--modificado-->
+                                <p>
+                                <img id= "imgDeparture" src="" alt="airline" class="logo"> </p><!--modificado-->
+                            <a id="btnDeparture" href="" target="_blank">
+                                <button class="btn-search">Ir al vuelo</button>
+                            </a>
+                            </div>
+                        </div>
+                    </div>
+                <div class="simple">
+                    <div class="flightInfoBoxes">       
+                        <label for="labelDeparture">Origen <br></label>
+                        <p id="labelDeparture">dsadasdasdad</p>
+                    </div>
+                    <div class="flightInfoBoxes">
+                        <label for="labelArrival">Destino <br></label>
+                        <p id="labelArrival">fsdfdsfdsfdsfsdf</p>
+                    </div>
+                </div>
+            </div>
+            <div class="darkFlight">
+                <div class="compound">
+                    <div class="flightInfoBoxes">
+                        <label for="LabelDepartureDate">Fecha de Salida <br></label>
+                        <p id="labelDepartureDate">dasdfasdad</p>
+                    </div>
+                    <div class="flightInfoBoxesCompound">
+                        <label for="LabelDepartureTime">Hora de Salida <br></label>
+                        <p id="departureTime">dafasfddas</p>
+                    </div>
+                    <div class="flightInfoBoxesCompound">
+                        <label for="LabelArrivalTime">Hora de Llegada <br></label>
+                        <p id="arrivalTime">fdsffsdfdsf</p>
+                    </div>
+                </div>
+            </div>
+                <div class="dark-b">
+                    <div class="simple">
+                        <div class="flightInfoBoxes">
+                            <label for="flihtInfoTitle" class="subtitle">VUELTA <br></label><!--modificado-->
+                            <img src="./images/plane-r.png" alt="plane" class="thumbnail"> <!--modificado-->       
+                        </div>
+                        <div class="flightInfoBoxes">
+                            <label for="airlineReturn"></label>
+                            <div class="goTo"> <!--modificado-->
+                                <p>
+                                <img id= "imgArrival"src="" alt="airline" class="logo"> </p><!--modificado-->
+                                <!--modificado + id btn + onclick-->                            
+                            <a id="btnArrival" href="" target="_blank">
+                                <button class="btn-search" >Ir al vuelo</button>
+                            </a>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="simple">
+                        <div class="flightInfoBoxes">
+                            <label for="LabelReturnD">Origen <br></label>
+                            <p id="labelReturnDA">dsadasdasdasdas</p>
+                        </div>
+                        <div class="flightInfoBoxes">
+                            <label for="LabelReturnA">Destino <br></label>
+                            <p id="labelReturnAA">dsadasdasdasd</p>
+                        </div>                    
+                    </div>
+            </div>
+            <div class="dark-b">
+                <div class="compound">
+                    <div class="flightInfoBoxes">
+                        <label for="LabelReturnDate">Fecha de Salida<br></label>
+                        <p id="labelReturnDate">asdsadsadasda</p>
+                    </div>
+                    <div class="flightInfoBoxesCompound">
+                        <label for="LabelReturnTime">Hora de Salida <br></label>
+                        <p id="returnDepartureTime">dsadsdasd</p>
+                    </div>
+                    <div class="flightInfoBoxesCompound">
+                        <label for="LabelArrivalTime">Hora de Llegada <br></label>
+                        <p id="returnArrivalTime">dsadsaasd</p>  
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div id="priceInfo">
+                <div id="pricePax">
+                    <label for="LabelPassengers">Pasajeros <br></label>
+                    <p id="labelPassengers">dsadsadsd</p>
+                </div>
+                <div id="price">
+                    <label for="LabelPrice">Precio<br></label>
+                    <p id="labelPrice">dsadsadsd</p>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+    <p><a href='#modal'></a></p>
+    <div id='modal' class='overlay'>
+        <div id='modalBody'>
+            <a id='close' href='#'></a>
+            <a id='close' href='#'>×</a>
+            <div class='modalContent'>
+                <div>
+                <label for="passengersPax">Número de pasajeros (1-10):<br/></label>
+                <input type="number" id="passengersPax" name="passengersPax" min="1" max="10" required>
+                </div>
+                <label for="passengersAge" id="label-ages"></label>
+                <div id="passengersAge" class="centro columna">
+                </div>
+                <div>
+                    <input type="submit" onclick="closeModal()" class="btn-modal" value="Aceptar" id="btn-search-modal">
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- SOL -->
+    <p><a href='#waiting'></a></p>
+    <div id='modalWaiting' class='overlay2'>
+            <div id='modalBodyW'>
+                <div class='modalContentWaiting'>
+                    <div id="waiting">
+                        <div class="waitingMsg">
+                            <p class="waitingMsg">Espera unos instantes,</p>
+                            <p class="waitingMsg">estamos buscando el vuelo más barato.</p>
+                        </div>
+                        <img src="./images/plane.gif" alt="waitingImg" id="waitingGif">
+                        <div id="covidMsg">
+                            <p>Debido a la situación provocada por el COVID19 y las restricciones aplicadas por algunos países, esta búsqueda puede tardar más de lo normal. Te pedimos paciencia, estamos trabajando para ofrecerte el vuelo más barato.</p>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+    </div>
+    
+
+        <!-- SOL -->
+        <p><a href='#notfound'></a></p>
+        <div id='notFound' class='overlay3'>
+            <div id='modalBodyNotFound'>
+                <div class='modalContent'>
+                    <div id="modalBodyN">
+                    <DIV><a id='closeNotFound' href='#'>X</a></DIV>
+                    <div id="notFoundMessage">No hemos encontrado el vuelo que buscas. Intenta buscando en otros destinos y/o fechas.
+                    </div>
+                    <div>
+                        <img src="./images/notFond.gif" alt="notFound" id="notFound">
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    <div class="move">
+        <p>Información sobre COVID-19: Algunos países están aplicando restricciones en la entrada y salida de pasajeros.</p>
+    </div>  
+    <script src="./index.js"></script> 
+</body>
+
+</html>

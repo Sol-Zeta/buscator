@@ -1,0 +1,38 @@
+{
+  "name": "vueling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "engines": {
+    "node": "12.11.1"
+    },
+  "scripts": {
+    "cy:run": "cypress run",
+    "e2e": "cypress open",
+    "start" : "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lulisway/vueling.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lulisway/vueling/issues"
+  },
+  "homepage": "https://github.com/lulisway/vueling#readme",
+  "dependencies": {
+    "after-load": "^1.0.4",
+    "airport-codes": "^1.0.2",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "moments": "0.0.2",
+    "puppeteer": "^4.0.1",
+    "request": "^2.88.2",
+    "selenium": "^2.20.0",
+    "selenium-webdriver": "^4.0.0-alpha.7"
+  },
+  "devDependencies": {
+    "cypress": "^4.8.0"
+  }
+}
