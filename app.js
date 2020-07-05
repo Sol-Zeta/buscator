@@ -7,10 +7,6 @@ const puppeteer = require('puppeteer');
 const port = process.env.PORT || 8888;
 app.listen(port)
 console.log('Server listening to: ', port)
-// const portListen = 8888
-// app.listen(portListen)
-// console.log('Server listening to: ', portListen)
-
 
 
 //// -------- Endpoints -------- ////
@@ -26,8 +22,6 @@ app.get ('/search/D/:departureAirport/A/:arrivalAirport/DD/:departureDate/AD/:re
     // --- Request Params --- //
     let depAirport = req.params.departureAirport
     let arrAirport = req.params.arrivalAirport
-    console.log(depAirport)
-    console.log(arrAirport)
     let depDate = req.params.departureDate
     let retDate = req.params.returnDepartureDate
     let depMonth = getYearAndMonth(req.params.departureDate)
@@ -35,11 +29,8 @@ app.get ('/search/D/:departureAirport/A/:arrivalAirport/DD/:departureDate/AD/:re
     let retMonth = getYearAndMonth(req.params.returnDepartureDate)
     let retDay = getDay(req.params.returnDepartureDate)
     let passengers = getPassengers(req.params.aditionalPassengers)
-    console.log("estos son los pasajeros", passengers)
 
     let url = `https://www.norwegian.com/es/ipc/availability/avaday?AdultCount=${passengers.adults}&ChildCount=${passengers.kids}&InfantCount=${passengers.babies}&A_City=${arrAirport}&D_City=${depAirport}&D_Month=${depMonth}&D_Day=${depDay}&R_Month=${retMonth}&R_Day=${retDay}&IncludeTransit=true&TripType=2`
-    console.log(url)
-
     let urlWizz =`https://wizzair.com/es-es/#/booking/select-flight/${depAirport}/${arrAirport}/${depDate}/${retDate}/${passengers.adults}/${passengers.kids}/${passengers.babies}/0/null`
 
     sendBestPrice(url, urlWizz, depAirport, arrAirport)
@@ -54,9 +45,6 @@ async function sendBestPrice(url, urlWizz, depAirport, arrAirport){
                     console.log('data undefined')
                 }
                 else {
-                    console.log("llega hasta getDataWizz")
-                    console.log("obj recibido en getDataWizz: ", data)
-                    console.log("data" + data)
                     return data
                 }
             })
@@ -69,13 +57,9 @@ async function sendBestPrice(url, urlWizz, depAirport, arrAirport){
                 console.log('data undefined')
             }
             else {
-                console.log("llega hasta getData")
-                console.log("obj recibido en getData: ", data)
                 return data
             }
         })
-        await console.log("soy resultNor linea 81: ", resultNor)
-        // await sleep(5000)
         await getBestPrice(resultNor, resultWizz)
                 .then(
                 (data) => {
@@ -90,15 +74,11 @@ async function sendBestPrice(url, urlWizz, depAirport, arrAirport){
                         res.send(noFlights)
                     }
                     else {
-                        console.log("llega hasta getBestPrice")
-                        console.log("el  mejor precio en getBestPrice: ", data.finalValue)
-                        console.log('data que deberia ser enviada a front')
-                        console.log("data:", data)
                         res.send(data)
                     }    
                 }
                 )
-            .catch( err => { console.log("Error en promesa: ",  err); })
+            .catch( err => { console.log("Error in promise: ",  err); })
             }
 })
 
@@ -139,47 +119,28 @@ let dataNor = {
                 //$("tbody .oddrow.rowinfo1 .arrdest div span").text()
 
                 let depTime = $(".oddrow.rowinfo1 .depdest div").html()
-                console.log("depTime: ", depTime)
                 let depTimeSpan = $(".oddrow.rowinfo1 .depdest div span").text()
                 let arrTime = $(".arrdest div").html()
-                console.log("arrTime:", arrTime)
                 let arrTimeSpan = addScale(depTime, arrTime)
-                console.log(depTime)
-                console.log(depTimeSpan)
-
-                console.log(arrTimeSpan)
                 let depPrice = parseFloat($(".content label").text().replace(/,/g, '.'))
-                console.log(depPrice)
                 let arrPrice = parseFloat($("#avaday-inbound-result > div > div > div > div > table > tbody > tr > .fareselect.standardlowfare .content label").html().replace(/,/g, '.'))
-                console.log(arrPrice)
                 let depCity = $(".avadaytable > tbody > .oddrow.rowinfo2 > .depdest > .content").html()
-                console.log("DEPAIRPORT: " + depAirport)
                 let arrCity = $(".avadaytable > tbody > .oddrow.rowinfo2 > .arrdest > .content").html()
-                console.log("ARRAIRPORT: " + arrAirport)
                 let depDate = $(".sectionboxavaday.avadayoutbound > .headerbox > .layouttable > tbody > tr > td").next().text()
-                console.log("DEPDATE: " + depDate)
                 let retDate = $(".sectionboxavaday.avadayinbound > .headerbox > .layouttable > tbody > tr > td").next().text()
                 let retDepTime = $(".sectionboxavaday.avadayinbound > .bodybox > .body > .avadaytable > tbody > tr > td > div").html()
                 let retArrTime = $(".sectionboxavaday.avadayinbound > .bodybox > .body > .avadaytable > tbody > tr > .arrdest > div").text()
                 let retArrTimeSpan = addScale(retDepTime, retArrTime)
-                //$("#avaday-inbound-result > div > div > .bodybox > div > table > tbody > tr > .arrdest > div").text()
-                console.log("retArrTimeSpan: " + retArrTimeSpan)
 
                 function addScale(dep, arr){
                     let depHour = dep.substring(0,2)
-                    console.log("depHour: ", depHour)
                     let arrHour = arr.substring(0,2)
-                    console.log("arrHour: ", arrHour)
-                    // let patt = /[+1]/
-                    // let res = patt.test(oneMoreDay)
                     if(arrHour < depHour){
                         let oneScale = "+1"
-                        console.log(oneScale)
                         return oneScale
                     }
                     else{
                         let noScale = ""
-                        console.log("noScale: " + noScale)
                         return noScale
                     }
                 }
@@ -187,7 +148,6 @@ let dataNor = {
                 await page.screenshot({path: 'screenshot.png'});
 
                 dataNor.departureAirport = `${depCity}`;
-                //dataNor.departureAirport = `${depAirport}, ${depCity}`; ver esto
                 dataNor.arrivalAirport = `${arrCity}`;
                 dataNor.departureDate = depDate;
                 dataNor.departureTime = `${depTime}`;
@@ -198,7 +158,6 @@ let dataNor = {
                 dataNor.returnDepartureTime = retDepTime;
                 dataNor.returnArrivalTime = `${retArrTime.substring(0,5)}${retArrTimeSpan}`;
                 dataNor.finalValue = depPrice + arrPrice;
-                console.log("DataNor dentro del try: " + dataNor)
                 await browser.close();
                 return dataNor
             }
@@ -210,7 +169,6 @@ let dataNor = {
         console.error(err);
     }
     await sleep(5000);
-    console.log('DataNor fuera del try catch: ', dataNor)
     return (dataNor);
 }
 
@@ -244,31 +202,19 @@ async function getDataWizz(urlWizz, depAirport, arrAirport) {
                     const $= cheerio.load(await page.content());
 
                     let depCity= $('#outbound-fare-selector .flight-select__flight-info__time .station').html();
-                    console.log(depCity);
                     let arrCity= $('#outbound-fare-selector .flight-select__flight-info__time .station.align-right').html();
-                    console.log(arrCity);
                     let departureDate= $('#outbound-fare-selector .flight-select__flight-info__details .flight-select__flight-info__day').html();
-                    console.log(departureDate);
                     let departureTime= $('#outbound-fare-selector .flight-select__flight-info__time .hour').html();
-                    console.log(departureTime);
                     let arrivalTime= $('#outbound-fare-selector .flight-select__flight-info__times :nth-child(3) span').html();
-                    console.log(arrivalTime);
                     let arrTimeSpan = addScale(departureTime, arrivalTime)
                     let returnDepartureAirport= $('#return-fare-selector .flight-select__flight-info__time .station').html();
-                    console.log(returnDepartureAirport);
                     let returnArrivalAirport= $('#return-fare-selector .flight-select__flight-info__time .station.align-right').html();
-                    console.log(returnArrivalAirport);
                     let returnDate= $('#return-fare-selector .flight-select__flight-info__details .flight-select__flight-info__day').html();
-                    console.log(returnDate);
                     let returnDepartureTime= $('#return-fare-selector .flight-select__flight-info__time .hour').html();
-                    console.log(returnDepartureTime);
                     let returnArrivalTime= $('#return-fare-selector .flight-select__flight-info__times :nth-child(3) span').html();
-                    console.log(returnArrivalTime);
                     let retArrTimeSpan = addScale(returnDepartureTime, returnArrivalTime)
                     let depPrice = parseFloat($('#outbound-fare-selector .fare-type-button__title.fare-type-button__title--active span').html().replace(/,/g, '.').substring(16, 21));
-                    console.log(depPrice);
                     let arrPrice = parseFloat($('#return-fare-selector .fare-type-button__title.fare-type-button__title--active span').html().substring(16, 21).replace(/,/g, '.'));
-                    console.log(arrPrice);
 
                     function addScale(dep, arr){
                         let depHour
@@ -279,21 +225,16 @@ async function getDataWizz(urlWizz, depAirport, arrAirport) {
                         else if (arr.length < 5){
                             arrHour = arr.substring(0,1)
                         }
-                        else{depHour = dep.substring(0,2)
-                            console.log("depHour: ", depHour)
+                        else{ depHour = dep.substring(0,2)
                             arrHour = arr.substring(0,2)
-                            console.log("arrHour: ", arrHour)}
+                        }
 
-                        // let patt = /[+1]/
-                        // let res = patt.test(oneMoreDay)
                         if(arrHour < depHour){
                             let oneScale = "+1"
-                            console.log(oneScale)
                             return oneScale
                         }
                         else{
                             let noScale = ""
-                            console.log("noScale: " + noScale)
                             return noScale
                         }
                     }
@@ -310,7 +251,6 @@ async function getDataWizz(urlWizz, depAirport, arrAirport) {
                         dataWizz.returnDepartureTime=  returnDepartureTime;
                         dataWizz.returnArrivalTime=  `${returnArrivalTime}${retArrTimeSpan}`;
                         dataWizz.finalValue = parseFloat((depPrice + arrPrice).toFixed(2));
-                        console.log("DataWizz dentro del try: " + dataWizz)
                         await browser.close();
                         return dataWizz
                     }
@@ -322,7 +262,6 @@ async function getDataWizz(urlWizz, depAirport, arrAirport) {
                 console.error(err);
             }
             await sleep(5000);
-            console.log('DataNorWizz fuera del try catch: ', dataWizz)
             return (dataWizz);
 }
 
@@ -343,7 +282,6 @@ function getDay(date){
         /* --- Passengers Functions --- */
 
 function getPassengers(passengers){
-    // let allpassengers = []
     let str = passengers
     let all = str.split("-");
     let babies = []
@@ -374,7 +312,6 @@ function getPassengers(passengers){
             adults : `${adults.length}`,
             noOne : noPassanger.length
         }
-            console.log(passengersPerAge)
             return passengersPerAge
 }
 
@@ -395,17 +332,14 @@ async function getBestPrice (result1,result2){
     }
     else {
       let minValue = Math.min(result1.finalValue, result2.finalValue)
-      console.log(`el precio mas bajo es ${minValue}€`)
 
       switch (minValue) {
           case result1.finalValue:
             await new Promise (r => setTimeout(r, 1000) )
-            await console.log('El vuelo más barato es de ' + result1.airlineName);
             return result1
             break;
           case result2.finalValue:
             await new Promise (r => setTimeout(r, 1000) )
-            await console.log('El vuelo más barato es de ' + result2.airlineName)
             return result2
             break;
           default:

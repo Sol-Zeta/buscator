@@ -1,4 +1,4 @@
-//"use strict"
+"use strict"
 
 let arrayPassengers = []
 
@@ -148,12 +148,9 @@ function findMatches(wordToMatch, cities) {
 }
 
 function displayMatches(e) {
-  // console.log(e.target.value);
   const html = findMatches(e.target.value, cities).map(place => {
     if (place.iata !== "" ){
-      return `
-                    <option value="${place.iata}"id="${place.iata}">${place.city}, ${place.iata}</option>
-            `
+      return `<option value="${place.iata}"id="${place.iata}">${place.city}, ${place.iata}</option>`
     }
   }).join('');
   depOptions.style.display = "block";
@@ -164,7 +161,6 @@ search1.addEventListener('keyup', (e) => displayMatches(e));
 
 // -- ARRIVAL -- //
 const cities2 = [];
-// console.log(cities2);
 fetch('./airport.json')
   .then(data => data.json())
   .then(data => {
@@ -190,9 +186,7 @@ function findMatches2(wordToMatch, cities2) {
 function displayMatches2(e) {
   const html2 = findMatches2(e.target.value, cities).map(place => {
     if (place.iata !== "" ){
-      return `
-                    <option value="${place.iata}"id="${place.iata}">${place.city}, ${place.iata}</option>
-            `
+      return `<option value="${place.iata}"id="${place.iata}">${place.city}, ${place.iata}</option>`
     }
   }).join('');
   arrOptions.style.display = "block";
@@ -249,7 +243,6 @@ function passengersPerAge() {
 }
 
 function renderAgeOptions(passengersPax){
-  // Función hija -- Closure
   function generatePassengersOptions(value, content){
     let newPassengerDiv = document.createElement('option')
     if(value === "1"){
@@ -291,7 +284,6 @@ function renderAgeOptions(passengersPax){
     let newPassengerAge = document.createElement('p')
     newPassengerAge.setAttribute("value", x)
     newPassengerAge.setAttribute("id", x)
-    // newPassengerAge.text = `Pasajero n°${x+1}: ${passenger.value}`
     if(passenger.value == 1 || passenger.value.length > 2){
       newPassengerAge.innerHTML = `Pasajero nº ${x+1}: Bebé (de 0 a 23 meses)`
       document.getElementById('selectedPassengers').appendChild(newPassengerAge)
@@ -320,7 +312,7 @@ function renderAgeOptions(passengersPax){
 }
 
 
-// ----------- VENTANA MODAL ----------- //
+// ----------- MODAL WINDOW ----------- //
 
 let btnPassengers = document.getElementById('btn-modal')
     btnPassengers.addEventListener('click', (e) =>{
@@ -344,7 +336,7 @@ console.log(getDepartureDate())
 
 function sendRequest() {
 
-  // ------ waiting modal ------ //
+  // ------ waiting modal window ------ //
   location.href = '#waiting'
   document.getElementById('modalWaiting').style.visibility = "visible"
   document.getElementById('modalWaiting').style.opacity = "100"
@@ -354,9 +346,7 @@ function sendRequest() {
 
   let departureDate = getDepartureDate()
   let returnDepartureDate = getReturnDepartureDate()
-  console.log(getDepartureDate())
-  console.log(getReturnDepartureDate())
-
+  
   let aditionalPassengers = writePassengers(arrayPassengers)
   function writePassengers(arrayPassengers){
     let i
@@ -369,39 +359,13 @@ function sendRequest() {
       result += `${arrayPassengers[i].toString()}`
       return result
   }
-  console.log("array de pasajeros", arrayPassengers)
-
-
-  //let returnDepartureDate = document.getElementById('returnDepartureDate').value
-
-
-  // let departureAirport= getDepartureAirport();
-  // // console.log(departureAirport);
-
-  // let arrivalAirport= getArrivalAirport();
-  // console.log(arrivalAirport);
-
-  // let petition = `http://localhost:8888/search/D/${departureAirport}/A/${arrivalAirport}/DD/${departureDate}/AD/${returnDepartureDate}/PA/${aditionalPassengers}`
-
-
-
   let petition = `/search/D/${departureAirport}/A/${arrivalAirport}/DD/${departureDate}/AD/${returnDepartureDate}/PA/${aditionalPassengers}`
-
-
-
-  console.log("petition: " + petition)
-
   searchFlights(petition, aditionalPassengers)
-
 }
 
 
 function checkDate(dateOrNot) {
   let regexDate = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
-  console.log("lo que da el test de regex", regexDate.test(dateOrNot))
-
-  console.log(dateOrNot)
-
   if (!regexDate.test(dateOrNot)){
       return false;
   }
@@ -409,9 +373,6 @@ function checkDate(dateOrNot) {
     return true;
   }
 }
-
-console.log("fecha inventada", checkDate("2000-12-05"))
-console.log("fecha inventada", checkDate("20002-01-02"))
 
 let search = document.getElementById('searchForm')
 search.addEventListener("submit", e => {
@@ -431,7 +392,6 @@ search.addEventListener("submit", e => {
     departureDate.style.border = "solid gold"
     console.log(departureDate.value)
     console.log("tipo", typeof departureDate.value)
-
   }
   else if (!checkDate(returnDepartureDate.value)) {
     warnings += `Introduce una fecha de vuelta válida: DD/MM/AAAA <br>`
