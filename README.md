@@ -3,6 +3,6 @@ A metasearch engine to find a flight at the best price based on scrapping techni
 
 
 Team:
-Lucía Arena: https://github.com/lulisway
-Nora Gonzalo: https://github.com/Nor-Norit-Nor
-M. Soledad Pattoglio: https://github.com/Sol-Zeta
+- Lucía Arena: https://github.com/lulisway
+- Nora Gonzalo: https://github.com/Nor-Norit-Nor
+- M. Soledad Pattoglio: https://github.com/Sol-Zeta
